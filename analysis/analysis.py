@@ -80,7 +80,7 @@ sfc_clean_sort_net_worth['net_worth_quintiles'] = net_worth_quintiles
 
 # -- bin end-points for age.
 
-age_bin_end_points = [25,35,45,55,65]
+age_bin_end_points = [35,45,55,65]
 
 # -- extract age as sorted np array
 
@@ -108,12 +108,12 @@ sfc_clean_sort_age['age_bin'] = age_bin
 
 # -- gini co for net worth
 
-gini_net_worth = generate_gini(np.array(sfc_clean_sort_net_worth['net_worth']),
+gini_net_worth, lorenz_net_worth = generate_gini(np.array(sfc_clean_sort_net_worth['net_worth']),
                                      np.array(sfc_clean_sort_net_worth['net_worth_pdf']),
                                      sample_nobs)
 
 # -- gini co for income
-gini_income_total = generate_gini(np.array(sfc_clean_sort_income_total['income_total']),
+gini_income_total, lorenz_income_total = generate_gini(np.array(sfc_clean_sort_income_total['income_total']),
                                      np.array(sfc_clean_sort_income_total['income_total_pdf']),
                                      sample_nobs)
 
@@ -135,7 +135,7 @@ variables_here = list(sfc_clean_sort_income_total)
 # ________________ Compute total averages ___________________________________ #
 
 
-averate_total = generate_averages(sfc_clean_sort_income_total, 'income_total_quintiles','hh_weight',bygroupyes=2)
+average_total = generate_averages(sfc_clean_sort_income_total, 'income_total_quintiles','hh_weight',bygroupyes=2)
 
 
 
@@ -208,8 +208,12 @@ data_to_output = {'average_net_worth_partition_quintiles':average_net_worth_part
               'average_age_partition':average_age_partition,
               'average_net_worth_partition_deciles':average_net_worth_partition_deciles,
               'average_income_partition_deciles':average_income_partition_deciles,
+              'average_total':average_total,
               'gini_net_worth': gini_net_worth,
-              'gini_income_total':gini_income_total
+              'gini_income_total':gini_income_total,
+              'lorenz_net_worth':lorenz_net_worth,
+              'lorenz_income_total': lorenz_income_total,
+              'sfc_clean_pd':sfc_clean_pd
         }
 
 

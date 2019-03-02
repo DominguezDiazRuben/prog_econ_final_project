@@ -98,6 +98,8 @@ sfc_clean_pd.set_index('hh_id',inplace=True)
 
 sfc_clean_pd.drop(sfc_clean_pd[sfc_clean_pd.net_worth <= 0].index,inplace = True)
 sfc_clean_pd.drop(sfc_clean_pd[sfc_clean_pd.income_total <= 0].index,inplace = True)
+sfc_clean_pd.drop(sfc_clean_pd[sfc_clean_pd.hh_age <= 25].index,inplace = True)
+sfc_clean_pd.drop(sfc_clean_pd[sfc_clean_pd.hh_age > 80].index,inplace = True)
 
 # -- Save to pickle.
 
