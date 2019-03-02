@@ -6,10 +6,12 @@ import pickle as pk
 
 
 
-#### load data
+# -- Load data.
 
 sfc16 = pd.read_stata("../data/sfc2016.dta") 
 
+
+# -- Variables that we want to work with.
 
 my_variables =['income_wage',
                            'income_bussiness',
@@ -33,7 +35,7 @@ my_variables =['income_wage',
                            'hh_employment_status',
                            'hh_id',
                            'hh_weight']
-### Income variables.
+# -- Income variables.
 
 income_wage = sfc16['wageinc']
 income_bussiness = sfc16['bussefarminc']
@@ -45,7 +47,7 @@ income_capital = income_capitalgains + income_dividendsinterests
 income_total = income_bussiness + income_capitalgains + income_dividendsinterests + income_retirementincome + income_transfers + income_wage 
 
 
-### Wealth variables.
+# -- Wealth variables.
 
 net_worth = sfc16['networth']
 assets_total = sfc16['asset']
@@ -58,7 +60,7 @@ debt_secured = sfc16['mrthel'] + sfc16['resdbt']
 debt_nonsecured = debt_total - debt_secured
 net_home_equity = assets_house_main + assets_house_other - debt_secured
 
-## household characteristics
+# -- Household characteristics.
 
 hh_age = sfc16['age']
 hh_employment_status = sfc16['OCCAT1']
@@ -91,5 +93,12 @@ sfc_clean_dict = {'income_wage':income_wage,
 
 sfc_clean_pd = pd.DataFrame(sfc_clean_dict)
 sfc_clean_pd.set_index('hh_id',inplace=True)
+
+# --  Eliminate observations with non-positive income or wealth, for simplicity
+
+sfc_clean_pd.drop(sfc_clean_pd[sfc_clean_pd.net_worth <= 0].index,inplace = True)
+sfc_clean_pd.drop(sfc_clean_pd[sfc_clean_pd.income_total <= 0].index,inplace = True)
+
+# -- Save to pickle.
 
 sfc_clean_pd.to_pickle('sfc_clean_pd.pkl')

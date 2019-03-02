@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import pickle as pk
+import pickle as pkl
 from myfunctions import generate_bins
 from myfunctions import generate_densities
 from myfunctions import generate_gini
@@ -14,10 +14,12 @@ sfc_clean_pd = pd.read_pickle('../data_management/sfc_clean_pd.pkl')
 # Create population partitions by net worth, income and age ###################
 ###############################################################################
 
+# -- number of observations.
+
 sample_nobs = len(sfc_clean_pd)
 
 
-#____________ compute empirical cdfs and pdfs of income/wealth________________#
+#____________ Compute empirical cdfs and pdfs of income/wealth________________#
 
 
 
@@ -199,6 +201,7 @@ for variable_iterate in portfolio_variables:
 ############ Store Everything to produce final output #########################
 ###############################################################################
     
+# -- merge into a dictionary
     
 data_to_output = {'average_net_worth_partition_quintiles':average_net_worth_partition_quintiles,
               'average_income_partition_quintiles': average_income_partition_quintiles,
@@ -208,3 +211,10 @@ data_to_output = {'average_net_worth_partition_quintiles':average_net_worth_part
               'gini_net_worth': gini_net_worth,
               'gini_income_total':gini_income_total
         }
+
+
+# -- save dictionary
+f = open("data_to_output.pkl","wb")
+pkl.dump(data_to_output,f)
+f.close()
+
