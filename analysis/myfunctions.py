@@ -39,7 +39,7 @@ def generate_densities(myweight,myvariable):
 def generate_gini(mysortedvariable, mypdf, mynobs):
 #    weighted_variable = np.array(mysortedvariable*mypdf) 
     weighted_variable = mysortedvariable
-    indexes = np.arange(1, mynobs + 1)
+    indexes = np.arrange(1, mynobs + 1)
     weighted_sum = (indexes * mysortedvariable).sum()
     total = mysortedvariable.sum()
     ginico = (2/mynobs)*weighted_sum/total - (mynobs+1)/mynobs
