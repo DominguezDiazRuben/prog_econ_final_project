@@ -10,6 +10,7 @@ sfc_clean_pd = pd.read_pickle('../data_management/sfc_clean_pd.pkl')
 # Create population partitions by net worth, income and age ###################
 ###############################################################################
 
+sample_nobs = len(sfc_clean_pd)
 
 
 #____________ compute empirical cdfs and pdfs of income/wealth________________#
@@ -153,6 +154,24 @@ sfc_clean_sort_age['age_bin'] = age_bin
 
 
 
+###############################################################################
+################# Compute Gini Coefficients ###################################
+###############################################################################
+
+# once that everything has been sorted as before it much easier
+
+# for wealth
+
+net_worth_for_gini = np.array(np.array(sfc_clean_sort_net_worth['net_worth'])*np.array(sfc_clean_sort_net_worth['net_worth_pdf'])) 
+weighted_sum_gini = sum([(i+1)*yi for i, yi in enumerate(net_worth_for_gini)])
+gini_net_worth = (2/(sample_nobs*sum(net_worth_for_gini)))*weighted_sum_gini -((sample_nobs+1)/sample_nobs)
+
+# for income
+
+income_total_for_gini = np.array(np.array(sfc_clean_sort_income_total['income_total'])*np.array(sfc_clean_sort_income_total['income_total_pdf'])) 
+weighted_sum_gini = sum([(i+1)*yi for i, yi in enumerate(income_total_for_gini)])
+gini_income_total = (2/(sample_nobs*sum(income_total_for_gini)))*weighted_sum_gini -((sample_nobs+1)/sample_nobs)
+
 
 
 ###############################################################################
@@ -220,3 +239,15 @@ for variable_iterate in range(0,len(variables_here)):
         
 
 #___________ Age Partition ___________________________________________________#
+        
+variables_here = list(sfc_clean_sort_age)
+
+#initialize for age
+average_age_partition = pd.DataFrame(columns=variables_here,index=range(1,7))
+
+# loop over variables and computed weighted mean by age group
+for variable_iterate in range(0,len(variables_here)):
+    average_age_partition[variables_here[variable_iterate]] = sfc_clean_sort_age.groupby('age_bin').apply(lambda sfc_clean_sort_age: 
+        np.average(sfc_clean_sort_age[variables_here[variable_iterate]],weights=sfc_clean_sort_age['hh_weight']))
+        
+        
