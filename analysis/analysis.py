@@ -109,12 +109,12 @@ sfc_clean_sort_age['age_bin'] = age_bin
 # -- gini co for net worth
 
 gini_net_worth, lorenz_net_worth = generate_gini(np.array(sfc_clean_sort_net_worth['net_worth']),
-                                     np.array(sfc_clean_sort_net_worth['net_worth_pdf']),
+                                     np.array(sfc_clean_sort_net_worth['hh_weight']),
                                      sample_nobs)
 
 # -- gini co for income
 gini_income_total, lorenz_income_total = generate_gini(np.array(sfc_clean_sort_income_total['income_total']),
-                                     np.array(sfc_clean_sort_income_total['income_total_pdf']),
+                                     np.array(sfc_clean_sort_income_total['hh_weight']),
                                      sample_nobs)
 
 

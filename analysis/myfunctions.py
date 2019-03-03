@@ -38,18 +38,26 @@ def generate_densities(myweight,myvariable):
 
 def generate_gini(mysortedvariable, weights, mynobs): 
     weighted_variable = mysortedvariable
-##    height, area = 0, 0
-##    for value in weighted_variable:
-##        height += value
-##        area += height - value / 2.
-##    fair_area = height * len(weighted_variable) / 2.
-##    ginico = (fair_area-area) / fair_area
-#    x = weighted_variable
-#    count = np.multiply.outer(weights, weights)
-#    mad = np.abs(np.subtract.outer(x, x) * count).sum() / count.sum()
-#    rmad = mad / np.average(x, weights=weights)
-#    ginico = 0.5 * rmad
-    ginico = 0
+#    height, area = 0, 0
+#    for value in weighted_variable:
+#        height += value
+#        area += height - value / 2.
+#    fair_area = height * len(weighted_variable) / 2.
+#    ginico = (fair_area-area) / fair_area
+    x = mysortedvariable
+    w = pd.Series(weights).reset_index(drop=True)
+    n = x.size
+    wxsum = sum(w * x)
+    wsum = sum(w)
+    sxw = np.argsort(x)
+    sx = x[sxw] * w[sxw]
+    sw = w[sxw]
+    pxi = np.cumsum(sx) / wxsum
+    pci = np.cumsum(sw) / wsum
+    ginico = 0.0
+    for i in np.arange(1, n):
+        ginico = ginico + pxi.iloc[i] * pci.iloc[i - 1] - pci.iloc[i] * pxi.iloc[i - 1]
+        
     lorenzcur_step = weighted_variable.cumsum()/weighted_variable.sum()
     lorenzcur = np.concatenate(([0],lorenzcur_step))
     
