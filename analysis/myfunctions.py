@@ -9,9 +9,9 @@ def generate_bins(endpoints,myvariable):
         store_position[i] = [ n for n,ii in enumerate(myvariable) if ii>endpoints_iterate ][0]
         # assign HHs to bins
         if (i == 0):
-            store_bin[0:(int(store_position[i])-1)] = i+1
+            store_bin[0:(int(store_position[i]))] = i+1
         else:
-            store_bin[int(store_position[i-1]):(int(store_position[i])-1)] = i+1
+            store_bin[int(store_position[i-1]):(int(store_position[i]))] = i+1
             
     store_bin[store_bin==0] = len(endpoints)+1
     return store_bin
@@ -37,15 +37,24 @@ def generate_densities(myweight,myvariable):
 
 
 def generate_gini(mysortedvariable, mypdf, mynobs):
-#    weighted_variable = np.array(mysortedvariable*mypdf) 
+#    weighted_variable = np.array(mysortedvariable*mypdf)
+        
     weighted_variable = mysortedvariable
-    indexes = np.arrange(1, mynobs + 1)
-    weighted_sum = (indexes * mysortedvariable).sum()
-    total = mysortedvariable.sum()
-    ginico = (2/mynobs)*weighted_sum/total - (mynobs+1)/mynobs
-    
+    height, area = 0, 0
+    for value in weighted_variable:
+        height += value
+        area += height - value / 2.
+    fair_area = height * len(weighted_variable) / 2.
+    ginico = (fair_area-area) / fair_area
+
+   
+#    indexes = np.arange(1, mynobs + 1)
+#    weighted_sum = (indexes * mysortedvariable).sum()
+#    total = mysortedvariable.sum()
+#    ginico = (2/mynobs)*weighted_sum/total - (mynobs+1)/mynobs
+#    
     lorenzcur_step = weighted_variable.cumsum()/weighted_variable.sum()
-    lorenzcur = np.insert(lorenzcur_step, 0, 0)
+    lorenzcur = np.concatenate(([0],lorenzcur_step))
     return ginico, lorenzcur
 
 
