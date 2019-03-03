@@ -22,6 +22,8 @@ age_partition = data_to_output['average_age_partition']
 average_total = data_to_output['average_total']
 
 sfc_clean_pd = data_to_output['sfc_clean_pd']
+sfc_net_worth_sort = data_to_output['sfc_clean_sort_net_worth']
+sfc_income_sort = data_to_output['sfc_clean_sort_income_total']
 
 lorenz_net_worth = data_to_output['lorenz_net_worth']
 lorenz_income = data_to_output['lorenz_income_total']

@@ -208,7 +208,9 @@ data_to_output = {'average_net_worth_partition_quintiles':average_net_worth_part
               'gini_income_total':gini_income_total,
               'lorenz_net_worth':lorenz_net_worth,
               'lorenz_income_total': lorenz_income_total,
-              'sfc_clean_pd':sfc_clean_pd
+              'sfc_clean_pd':sfc_clean_pd,
+              'sfc_clean_sort_net_worth':sfc_clean_sort_net_worth,
+              'sfc_clean_sort_income_total':sfc_clean_sort_income_total
         }
 
 

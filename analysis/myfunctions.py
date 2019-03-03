@@ -36,17 +36,11 @@ def generate_densities(myweight,myvariable):
 
 
 
-def generate_gini(mysortedvariable, weights, mynobs): 
-    weighted_variable = mysortedvariable
-#    height, area = 0, 0
-#    for value in weighted_variable:
-#        height += value
-#        area += height - value / 2.
-#    fair_area = height * len(weighted_variable) / 2.
-#    ginico = (fair_area-area) / fair_area
-    x = mysortedvariable
-    w = pd.Series(weights).reset_index(drop=True)
-    n = x.size
+def generate_gini(myvariable, myweights, mynobs): 
+
+    x = myvariable
+    w = pd.Series(myweights).reset_index(drop=True)
+    n = mynobs
     wxsum = sum(w * x)
     wsum = sum(w)
     sxw = np.argsort(x)
@@ -58,7 +52,8 @@ def generate_gini(mysortedvariable, weights, mynobs):
     for i in np.arange(1, n):
         ginico = ginico + pxi.iloc[i] * pci.iloc[i - 1] - pci.iloc[i] * pxi.iloc[i - 1]
         
-    lorenzcur_step = weighted_variable.cumsum()/weighted_variable.sum()
+#    lorenzcur_step = weighted_variable.cumsum()/weighted_variable.sum()
+    lorenzcur_step = pxi
     lorenzcur = np.concatenate(([0],lorenzcur_step))
     
     return ginico, lorenzcur
