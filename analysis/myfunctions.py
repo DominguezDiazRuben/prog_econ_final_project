@@ -36,22 +36,28 @@ def generate_densities(myweight,myvariable):
 
 
 
-def generate_gini(mysortedvariable, mypdf, mynobs): 
+def generate_gini(mysortedvariable, weights, mynobs): 
     weighted_variable = mysortedvariable
-    height, area = 0, 0
-    for value in weighted_variable:
-        height += value
-        area += height - value / 2.
-    fair_area = height * len(weighted_variable) / 2.
-    ginico = (fair_area-area) / fair_area
- 
+##    height, area = 0, 0
+##    for value in weighted_variable:
+##        height += value
+##        area += height - value / 2.
+##    fair_area = height * len(weighted_variable) / 2.
+##    ginico = (fair_area-area) / fair_area
+#    x = weighted_variable
+#    count = np.multiply.outer(weights, weights)
+#    mad = np.abs(np.subtract.outer(x, x) * count).sum() / count.sum()
+#    rmad = mad / np.average(x, weights=weights)
+#    ginico = 0.5 * rmad
+    ginico = 0
     lorenzcur_step = weighted_variable.cumsum()/weighted_variable.sum()
     lorenzcur = np.concatenate(([0],lorenzcur_step))
+    
     return ginico, lorenzcur
 
 
 
-def generate_averages(mydataset,mygroup=None,myweight):
+def generate_averages(mydataset,myweight,mygroup=None):
     myvariables = list(mydataset)
     if mygroup is None:
         myaverages = pd.DataFrame(columns=myvariables,index=range(1,2))

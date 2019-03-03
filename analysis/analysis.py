@@ -135,7 +135,7 @@ variables_here = list(sfc_clean_sort_income_total)
 # ________________ Compute total averages ___________________________________ #
 
 
-average_total = generate_averages(sfc_clean_sort_income_total, 'income_total_quintiles','hh_weight',bygroupyes=2)
+average_total = generate_averages(sfc_clean_sort_income_total,'hh_weight')
 
 
 
@@ -143,30 +143,26 @@ average_total = generate_averages(sfc_clean_sort_income_total, 'income_total_qui
 #________________ Income Partition ___________________________________________#
 
 
-average_income_partition_quintiles = generate_averages(sfc_clean_sort_income_total,
-                                                       'income_total_quintiles','hh_weight',
-                                                       bygroupyes=1)
-average_income_partition_deciles = generate_averages(sfc_clean_sort_income_total,
-                                                       'income_total_deciles','hh_weight',
-                                                       bygroupyes=1)
+average_income_partition_quintiles = generate_averages(sfc_clean_sort_income_total,'hh_weight',
+                                                       'income_total_quintiles')
+average_income_partition_deciles = generate_averages(sfc_clean_sort_income_total,'hh_weight',
+                                                       'income_total_deciles')
 
     
         
 #_____________ Net Worth Partition ___________________________________________#
         
         
-average_net_worth_partition_quintiles = generate_averages(sfc_clean_sort_net_worth,
-                                                       'net_worth_quintiles','hh_weight',
-                                                       bygroupyes=1)
-average_net_worth_partition_deciles = generate_averages(sfc_clean_sort_net_worth,
-                                                       'net_worth_deciles','hh_weight',
-                                                       bygroupyes=1)        
+average_net_worth_partition_quintiles = generate_averages(sfc_clean_sort_net_worth,'hh_weight',
+                                                       'net_worth_quintiles')
+average_net_worth_partition_deciles = generate_averages(sfc_clean_sort_net_worth,'hh_weight',
+                                                       'net_worth_deciles')        
       
 
 #___________ Age Partition ___________________________________________________#
 
-average_age_partition = generate_averages(sfc_clean_sort_age,
-                                                       'age_bin','hh_weight')
+average_age_partition = generate_averages(sfc_clean_sort_age,'hh_weight',
+                                                       'age_bin')
 
         
 #____________ Redefine some variables ________________________________________#

@@ -131,6 +131,6 @@ def test_generate_averages():
     expected_out['average_total']['income_total'] = float(expected_out['average_income'])
     expected_out['average_total']['hh_age'] = float(expected_out['average_age'])
     expected_out['average_total']['hh_weights'] = float(expected_out['average_weights'])
-    actual_average = generate_averages(sfc_test,myweight='hh_weights')
+    actual_average = generate_averages(sfc_test,'hh_weights')
     assert_frame_equal(actual_average, expected_out['average_total'])
     
