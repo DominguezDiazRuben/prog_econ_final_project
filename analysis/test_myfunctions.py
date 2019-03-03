@@ -24,7 +24,7 @@ def expected_output():
     expected_out['cdf'] = np.array([0.2,0.4,0.6,0.8,1])
     expected_out['lorenz'] = np.array([1/15,2/15,3/15,4/15,5/15])
     expected_out['average_net_worth'] = 3
-    expected_out['average_income'] = 3
+    expected_out['average_income'] = 3 
     expected_out['average_age'] = 51
     expected_out['wealth_bin'] = np.array([1,2,3,4,5])
     expected_out['income_bin'] = np.array([1,2,3,4,5])
@@ -41,7 +41,9 @@ def test_generate_bins():
     expected_out={}
     expected_out['pdf'] = np.array([0.2,0.2,0.2,0.2,0.2])
     expected_out['cdf'] = np.array([0.2,0.4,0.6,0.8,1])
-    expected_out['lorenz'] = np.array([1/15,2/15,3/15,4/15,5/15])
+    expected_out['lorenz'] = np.array([1/15,2/15,3/15,4/15,5/15]).cumsum()
+    expected_out['lorenz'] = np.insert(expected_out['lorenz'],0,0)
+    expected_out['ginico'] = 0.26666666
     expected_out['average_net_worth'] = 3
     expected_out['average_income'] = 3
     expected_out['average_age'] = 51 
@@ -64,7 +66,9 @@ def test_generate_densities():
     expected_out={}
     expected_out['pdf'] = np.array([0.2,0.2,0.2,0.2,0.2])
     expected_out['cdf'] = np.array([0.2,0.4,0.6,0.8,1])
-    expected_out['lorenz'] = np.array([1/15,2/15,3/15,4/15,5/15])
+    expected_out['lorenz'] = np.array([1/15,2/15,3/15,4/15,5/15]).cumsum()
+    expected_out['lorenz'] = np.insert(expected_out['lorenz'],0,0)
+    expected_out['ginico'] = 0.26666666
     expected_out['average_net_worth'] = 3
     expected_out['average_income'] = 3
     expected_out['average_age'] = 51 
@@ -100,3 +104,33 @@ def test_generate_gini():
                                                  mynobs)
     np.testing.assert_array_almost_equal(lorenz_actual,expected_out['lorenz'])
     np.testing.assert_array_almost_equal(ginico_actual,expected_out['ginico'])
+    
+def test_generate_averages():
+    sfc_test = pd.DataFrame(data=[[1,2,3,4,5],
+                             [1,2,3,4,5],
+                             [27,36,53,61,78],
+                             [1,1,1,1,1]])
+    sfc_test = sfc_test.T
+    sfc_test.columns = ['net_worth','income_total','hh_age','hh_weights']
+    
+    expected_out={}
+    expected_out['pdf'] = np.array([0.2,0.2,0.2,0.2,0.2])
+    expected_out['cdf'] = np.array([0.2,0.4,0.6,0.8,1])
+    expected_out['lorenz'] = np.array([1/15,2/15,3/15,4/15,5/15]).cumsum()
+    expected_out['lorenz'] = np.insert(expected_out['lorenz'],0,0)
+    expected_out['ginico'] = 0.26666666
+    expected_out['average_net_worth'] = 3
+    expected_out['average_income'] = 3
+    expected_out['average_age'] = 51 
+    expected_out['average_weights'] = 1
+    expected_out['wealth_bin'] = np.array([1,2,3,4,5])
+    expected_out['income_bin'] = np.array([1,2,3,4,5])
+    expected_out['age_bin'] = np.array([1,2,3,4,5])
+    expected_out['average_total'] = pd.DataFrame(columns=['net_worth','income_total','hh_age','hh_weights'],index=range(1,2))
+    expected_out['average_total']['net_worth'] = float(expected_out['average_net_worth'])
+    expected_out['average_total']['income_total'] = float(expected_out['average_income'])
+    expected_out['average_total']['hh_age'] = float(expected_out['average_age'])
+    expected_out['average_total']['hh_weights'] = float(expected_out['average_weights'])
+    actual_average = generate_averages(sfc_test,myweight='hh_weights')
+    assert_frame_equal(actual_average, expected_out['average_total'])
+    

@@ -36,9 +36,7 @@ def generate_densities(myweight,myvariable):
 
 
 
-def generate_gini(mysortedvariable, mypdf, mynobs):
-#    weighted_variable = np.array(mysortedvariable*mypdf)
-        
+def generate_gini(mysortedvariable, mypdf, mynobs): 
     weighted_variable = mysortedvariable
     height, area = 0, 0
     for value in weighted_variable:
@@ -46,30 +44,24 @@ def generate_gini(mysortedvariable, mypdf, mynobs):
         area += height - value / 2.
     fair_area = height * len(weighted_variable) / 2.
     ginico = (fair_area-area) / fair_area
-
-   
-#    indexes = np.arange(1, mynobs + 1)
-#    weighted_sum = (indexes * mysortedvariable).sum()
-#    total = mysortedvariable.sum()
-#    ginico = (2/mynobs)*weighted_sum/total - (mynobs+1)/mynobs
-#    
+ 
     lorenzcur_step = weighted_variable.cumsum()/weighted_variable.sum()
     lorenzcur = np.concatenate(([0],lorenzcur_step))
     return ginico, lorenzcur
 
 
 
-def generate_averages(mydataset,mygroup,myweight,bygroupyes):
+def generate_averages(mydataset,mygroup=None,myweight):
     myvariables = list(mydataset)
-    if bygroupyes == 1:
+    if mygroup is None:
+        myaverages = pd.DataFrame(columns=myvariables,index=range(1,2))
+        for variable_iterate in myvariables:
+            myaverages[variable_iterate] = np.average(mydataset[variable_iterate],weights=mydataset[myweight])
+    else:
         myaverages = pd.DataFrame(columns=myvariables,index=range(1,(len(np.unique(mydataset[mygroup]))+1)))
         for variable_iterate in myvariables:
             myaverages[variable_iterate] = mydataset.groupby(mygroup).apply(lambda mydataset: 
                 np.average(mydataset[variable_iterate],weights=mydataset[myweight]))
-    else:
-        myaverages = pd.DataFrame(columns=myvariables,index=range(1,2))
-        for variable_iterate in myvariables:
-            myaverages[variable_iterate] = np.average(mydataset[variable_iterate],weights=mydataset[myweight])
     return myaverages
    
         

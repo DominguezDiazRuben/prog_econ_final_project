@@ -166,8 +166,7 @@ average_net_worth_partition_deciles = generate_averages(sfc_clean_sort_net_worth
 #___________ Age Partition ___________________________________________________#
 
 average_age_partition = generate_averages(sfc_clean_sort_age,
-                                                       'age_bin','hh_weight',
-                                                       bygroupyes=1)
+                                                       'age_bin','hh_weight')
 
         
 #____________ Redefine some variables ________________________________________#
